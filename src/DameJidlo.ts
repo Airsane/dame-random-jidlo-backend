@@ -33,9 +33,7 @@ export default class DameJidlo{
 
     public getRandomFood():Product{
         this.checkIfRestaurantIsLoaded();
-
-        const randomCategory = this.getRandomCategory();
-        return randomCategory.products[Math.floor(Math.random() * randomCategory.products.length)];
+        return this.getRandomItemFromArray(this.getRandomCategory().products);
 
     }
 
@@ -55,13 +53,16 @@ export default class DameJidlo{
 
     private getRandomCategory():MenuCategory{
         this.checkIfRestaurantIsLoaded();
-        const randomMenu = this.getRandomMenu();
-        return randomMenu.menu_categories[Math.floor(Math.random() * randomMenu.menu_categories.length)];
+        return this.getRandomItemFromArray(this.getRandomMenu().menu_categories);
     }
 
     private getRandomMenu():Menu{
         this.checkIfRestaurantIsLoaded();
-        return this.restaurant!.data.menus[Math.floor(Math.random() * this.restaurant!.data.menus.length)];
+        return this.getRandomItemFromArray(this.restaurant!.data.menus);
+    }
+
+    private getRandomItemFromArray(item:any[]):any{
+        return item[Math.floor(Math.random() * item.length)];
     }
 
 
