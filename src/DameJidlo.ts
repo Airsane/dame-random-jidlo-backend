@@ -54,18 +54,14 @@ export default class DameJidlo{
     }
 
     private getRandomCategory():MenuCategory{
-        if(this.restaurant === null){
-            throw new Error("Restaurant not loaded");
-        }
+        this.checkIfRestaurantIsLoaded();
         const randomMenu = this.getRandomMenu();
         return randomMenu.menu_categories[Math.floor(Math.random() * randomMenu.menu_categories.length)];
     }
 
     private getRandomMenu():Menu{
-        if(this.restaurant === null){
-            throw new Error("Restaurant not loaded");
-        }
-        return this.restaurant.data.menus[Math.floor(Math.random() * this.restaurant.data.menus.length)];
+        this.checkIfRestaurantIsLoaded();
+        return this.restaurant!.data.menus[Math.floor(Math.random() * this.restaurant!.data.menus.length)];
     }
 
 
