@@ -13,6 +13,12 @@ export default class DameJidlo{
         return `https://cz.fd-api.com/api/v5/vendors/${code}?include=menus,bundles,multiple_discounts,payment_types&language_id=3&dynamic_pricing=0&opening_type=delivery&basket_currency=CZK&latitude=50.034191&longitude=15.761055`;
     }
 
+    private checkIfRestaurantIsLoaded(){
+        if(this.restaurant === null){
+            throw new Error("Restaurant not loaded");
+        }
+    }
+
 
     public async loadRestaurant(url:string){
         this.restaurant = (await axios.get(this.parseUrl(url))).data;
@@ -26,9 +32,7 @@ export default class DameJidlo{
     }
 
     public getRandomFood():Product{
-        if(this.restaurant === null){
-            throw new Error("Restaurant not loaded");
-        }
+        this.checkIfRestaurantIsLoaded();
 
         const randomCategory = this.getRandomCategory();
         return randomCategory.products[Math.floor(Math.random() * randomCategory.products.length)];
@@ -36,11 +40,10 @@ export default class DameJidlo{
     }
 
     public getAllFood():Product[]{
-        if(this.restaurant === null){
-            throw new Error("Restaurant not loaded");
-        }
+        this.checkIfRestaurantIsLoaded();
+
         const allFood: Product[] = [];
-        this.restaurant.data.menus.forEach(menu => {
+        this.restaurant!.data.menus.forEach(menu => {
             menu.menu_categories.forEach(category => {
                 category.products.forEach(product => {
                     allFood.push(product);
